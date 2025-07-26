@@ -27,6 +27,11 @@ import java.util.regex.Pattern;
  */
 public class RegularExpressions {
 
+    // State machine states for number validation
+    enum State {
+        START, SIGN, INTEGER, DECIMAL, FRACTION, EXP, EXP_SIGN, EXP_NUM
+    }
+
     public static void main(String[] args) {
         // Test Regular Expression problems
         System.out.println("=== REGULAR EXPRESSIONS PROBLEMS TEST ===");
@@ -277,11 +282,6 @@ public class RegularExpressions {
         if (s == null || s.trim().isEmpty()) return false;
         
         s = s.trim();
-        
-        // State machine states
-        enum State {
-            START, SIGN, INTEGER, DECIMAL, FRACTION, EXP, EXP_SIGN, EXP_NUM
-        }
         
         State state = State.START;
         boolean hasNum = false;

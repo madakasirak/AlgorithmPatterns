@@ -20,7 +20,7 @@
 
 ### **3. 🗺️ HashMap Implementation**
 - **[📖 Reading Guide](./HashMapReadingGuide.java)** - Theory and approach
-- **[💻 Implementation](./HashMapImplementation.java)** - Practice problems and solutions
+- **[�� Implementation](./CustomHashMapImplementation.java)** - Practice problems and solutions
 - **When to use**: Frequency counting, character mapping
 - **Complexity**: Time O(n), Space O(k)
 

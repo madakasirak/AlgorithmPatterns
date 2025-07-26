@@ -199,29 +199,8 @@ import java.util.*;
  */
 
 // Definition for a binary tree node
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    
-    TreeNode() {}
-    TreeNode(int val) { this.val = val; }
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
 
 // Definition for singly-linked list
-class ListNode {
-    int val;
-    ListNode next;
-    
-    ListNode() {}
-    ListNode(int val) { this.val = val; }
-    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-}
 
 public class TreeMirrorSymmetryReadingGuide {
     
@@ -571,7 +550,7 @@ public class TreeMirrorSymmetryReadingGuide {
             if (root == null) return 0;
             
             int count = 0;
-            if (isSymmetric(root)) count++;
+            if (SymmetryDetectionTemplates.isSymmetric(root)) count++;
             
             count += countSymmetricSubtrees(root.left);
             count += countSymmetricSubtrees(root.right);
@@ -603,21 +582,20 @@ public class TreeMirrorSymmetryReadingGuide {
         }
         
         /**
-         * Validate Symmetric Property After Transformation
-         * Strategy: Verify tree maintains symmetry after modifications
+         * Verify Symmetric Transformation
+         * Strategy: Check if transformation preserves required properties
          */
-        public static boolean validateSymmetryAfterTransformation(TreeNode original, TreeNode transformed) {
-            // Check if transformation preserved symmetry
-            return isSymmetric(transformed) && 
-                   hasSameStructure(original, transformed);
+        public static boolean verifySymmetricTransformation(TreeNode original, TreeNode transformed) {
+            return SymmetryDetectionTemplates.isSymmetric(transformed) && 
+                   preservesStructuralIntegrity(original, transformed);
         }
         
-        private static boolean hasSameStructure(TreeNode a, TreeNode b) {
+        private static boolean preservesStructuralIntegrity(TreeNode a, TreeNode b) {
             if (a == null && b == null) return true;
             if (a == null || b == null) return false;
             
-            return hasSameStructure(a.left, b.left) && 
-                   hasSameStructure(a.right, b.right);
+            return preservesStructuralIntegrity(a.left, b.left) && 
+                   preservesStructuralIntegrity(a.right, b.right);
         }
     }
     

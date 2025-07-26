@@ -731,20 +731,7 @@ public class DesignProblemsReadingGuide {
      * Always implement cleanup mechanisms for time-sensitive data
      */
     public static void memoryLeakExample() {
-        // Correct: Periodic cleanup of expired data
-        class TimeAwareSystem {
-            private java.util.PriorityQueue<TimestampedEntry> dataQueue;
-            private final long EXPIRY_TIME = 3600000; // 1 hour
-            
-            public void cleanupExpiredData() {
-                long currentTime = System.currentTimeMillis();
-                while (!dataQueue.isEmpty() && 
-                       dataQueue.peek().timestamp < currentTime - EXPIRY_TIME) {
-                    dataQueue.poll();
-                }
-            }
-        }
-        
+        // Define TimestampedEntry locally before usage
         class TimestampedEntry {
             long timestamp;
             Object data;
@@ -754,6 +741,22 @@ public class DesignProblemsReadingGuide {
                 this.timestamp = System.currentTimeMillis();
             }
         }
+        
+        // Correct: Periodic cleanup of expired data
+        class TimeAwareSystem {
+            private java.util.PriorityQueue<TimestampedEntry> dataQueue;
+            private final long EXPIRY_TIME = 3600000; // 1 hour
+            
+            public void cleanupExpiredData() {
+                long currentTime = System.currentTimeMillis();
+                while (!dataQueue.isEmpty() && 
+                       currentTime - dataQueue.peek().timestamp > EXPIRY_TIME) {
+                    dataQueue.poll();
+                }
+            }
+        }
+        
+        // Incorrect: No cleanup mechanism leads to memory leaks
     }
     
     // ============================================================================

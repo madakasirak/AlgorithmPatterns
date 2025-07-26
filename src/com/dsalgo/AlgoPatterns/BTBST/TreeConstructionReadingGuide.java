@@ -3,187 +3,147 @@ package com.dsalgo.AlgoPatterns.BTBST;
 import java.util.*;
 
 /**
- * 🏗️ BINARY TREE CONSTRUCTION PATTERN - COMPREHENSIVE READING GUIDE
+ * 🏗️ TREE CONSTRUCTION PATTERN - COMPREHENSIVE READING GUIDE
  * 
  * ============================================================================
- * 📚 WHAT IS BINARY TREE CONSTRUCTION PATTERN?
+ * 📚 WHAT IS TREE CONSTRUCTION?
  * ============================================================================
  * 
- * Binary Tree Construction Pattern involves creating binary trees from various
- * forms of input data, including traversal sequences, arrays, serialized strings,
- * and other structured representations. This pattern is essential for tree
- * reconstruction, deserialization, and building trees that satisfy specific
- * structural or ordering constraints.
- * 
- * The pattern requires understanding the relationship between different traversal
- * orders and how they can uniquely determine tree structure when combined properly.
- * It also involves handling edge cases, optimizing construction algorithms, and
- * ensuring the resulting tree matches the intended specification.
+ * Tree Construction involves building binary trees from given input data such as
+ * traversal sequences (inorder, preorder, postorder), level order data, or other
+ * structural information. This pattern requires understanding the mathematical
+ * relationships between different tree traversals and how unique trees can be
+ * reconstructed from minimal information.
  * 
  * 🔑 CORE PRINCIPLES:
- * 1. TRAVERSAL RELATIONSHIPS: Understand how different traversals uniquely identify trees
- * 2. RECURSIVE DECOMPOSITION: Break tree construction into subtree problems
- * 3. INDEX MANAGEMENT: Efficiently track positions in input sequences
- * 4. CONSTRAINT SATISFACTION: Build trees that meet specified requirements
+ * 1. UNIQUENESS: Inorder + (Preorder OR Postorder) uniquely determines a tree
+ * 2. ROOT IDENTIFICATION: Preorder gives root first, postorder gives root last
+ * 3. BOUNDARY CALCULATION: Inorder position divides left and right subtrees
+ * 4. RECURSIVE DECOMPOSITION: Solve for subtrees using same logic
  * 
- * 🏗️ BINARY TREE CONSTRUCTION METAPHOR:
- * Think of tree construction as "architectural blueprints":
- * - Traversal sequences: different views of the same building (floor plan, elevation, cross-section)
- * - Construction process: assembling the building from these coordinated views
- * - Constraints: building codes and requirements that must be satisfied
- * - Optimization: efficient construction methods that minimize time and resources
+ * 🏗️ CONSTRUCTION METAPHOR:
+ * Think of tree construction as "reverse engineering a blueprint":
+ * - You have the final result (traversal sequence)
+ * - You need to recreate the original structure (tree)
+ * - Each piece of information gives clues about the structure
+ * - Combine clues systematically to rebuild the whole
  * 
  * ============================================================================
- * 🎯 WHEN TO USE BINARY TREE CONSTRUCTION PATTERN
+ * 🎯 WHEN TO USE TREE CONSTRUCTION
  * ============================================================================
  * 
  * ✅ PERFECT FOR:
- * - Reconstructing trees from traversal sequences or serialized data
- * - Building trees that satisfy specific structural constraints
- * - Deserializing trees from storage or transmission formats
- * - Creating trees from array representations or level-order data
- * - Implementing tree persistence and recovery mechanisms
+ * - Building trees from traversal sequences
+ * - Reconstructing trees from serialized data
  * - Converting between different tree representations
+ * - Validating tree structure consistency
+ * - Implementing tree serialization/deserialization
  * 
  * 🔍 LOOK FOR THESE PHRASES:
  * - "Construct binary tree from..."
- * - "Build tree from traversal sequences"
- * - "Reconstruct tree from serialized data"
- * - "Create tree satisfying constraints"
- * - "Deserialize binary tree"
- * - "Tree construction from array"
+ * - "Build tree using inorder and preorder"
+ * - "Reconstruct tree from..."
+ * - "Deserialize tree from..."
+ * - "Given traversals, build tree"
  * 
  * 🚩 RED FLAGS (Consider Other Approaches):
- * - Simple tree modifications (use tree manipulation patterns)
- * - Tree searching without construction (use search patterns)
- * - Tree validation only (use validation patterns)
- * - Dynamic tree updates (use tree modification patterns)
+ * - Tree already exists (use traversal patterns)
+ * - Only need to process existing tree (use tree algorithms)
+ * - Building from unclear or insufficient data
+ * - Performance-critical real-time construction (consider caching)
  * 
  * ============================================================================
- * 🔄 BINARY TREE CONSTRUCTION PATTERN VARIATIONS
+ * 🔄 TREE CONSTRUCTION VARIATIONS
  * ============================================================================
  * 
  * 1️⃣ TRAVERSAL-BASED CONSTRUCTION
- * - Use combinations of traversal sequences to uniquely determine tree structure
- * - Preorder + Inorder: most common, root identification + left/right partitioning
- * - Inorder + Postorder: root at end, similar partitioning strategy
- * - Preorder + Postorder: works for full binary trees, requires special handling
+ * - Build from preorder + inorder
+ * - Build from postorder + inorder
+ * - Build from preorder + postorder (with restrictions)
  * 
- * 2️⃣ ARRAY-BASED CONSTRUCTION
- * - Build trees from array representations (complete binary trees)
- * - Level-order arrays: parent-child relationships through indexing
- * - Sorted arrays: create balanced BSTs through recursive partitioning
- * - Custom array formats: handle specific encoding schemes
+ * 2️⃣ LEVEL-ORDER CONSTRUCTION
+ * - Build from level-order traversal
+ * - Handle null values in serialization
+ * - Queue-based breadth-first construction
  * 
- * 3️⃣ SERIALIZED STRING CONSTRUCTION
- * - Reconstruct trees from string representations
- * - Preorder with null markers: straightforward recursive reconstruction
- * - Level-order serialization: BFS-based reconstruction
- * - Custom encoding schemes: handle compressed or specialized formats
+ * 3️⃣ STRING-BASED CONSTRUCTION
+ * - Deserialize from string representation
+ * - Handle various encoding formats
+ * - Parse structured tree data
  * 
- * 4️⃣ CONSTRAINT-BASED CONSTRUCTION
- * - Build trees satisfying specific structural or value constraints
- * - BST construction: maintain ordering properties during construction
- * - Balanced tree construction: ensure height constraints
- * - Custom constraint satisfaction: handle problem-specific requirements
+ * 4️⃣ ARRAY-BASED CONSTRUCTION
+ * - Build from array representation
+ * - Handle complete vs. incomplete trees
+ * - Index-based parent-child relationships
  * 
- * 5️⃣ INCREMENTAL CONSTRUCTION
- * - Build trees one node at a time with specific insertion rules
- * - BST insertion: maintain ordering while inserting nodes
- * - Heap construction: maintain heap properties during construction
- * - Custom insertion rules: handle specialized tree types
- * 
- * 6️⃣ TRANSFORMATION-BASED CONSTRUCTION
- * - Convert one tree representation to another
- * - Mirror tree construction: create reflected versions
- * - Tree merging: combine multiple trees following rules
- * - Subtree extraction: create new trees from existing subtrees
+ * 5️⃣ SPECIAL TREE CONSTRUCTION
+ * - Build BST from sorted array
+ * - Construct balanced trees
+ * - Create optimal tree structures
  * 
  * ============================================================================
  * 🧠 CORE CONCEPTS AND ALGORITHMS
  * ============================================================================
  * 
- * 🔹 PREORDER + INORDER CONSTRUCTION:
+ * 🔹 TRAVERSAL RELATIONSHIPS:
  * ```
- * 1. First element in preorder is root
- * 2. Find root position in inorder
- * 3. Elements before root in inorder = left subtree
- * 4. Elements after root in inorder = right subtree
- * 5. Recursively construct left and right subtrees
- * ```
- * 
- * 🔹 INORDER + POSTORDER CONSTRUCTION:
- * ```
- * 1. Last element in postorder is root
- * 2. Find root position in inorder
- * 3. Partition inorder into left and right subtrees
- * 4. Recursively construct subtrees with corresponding postorder parts
+ * INORDER: Left → Root → Right (gives left/right boundaries)
+ * PREORDER: Root → Left → Right (gives root for each subtree)
+ * POSTORDER: Left → Right → Root (gives root from the end)
+ * LEVEL-ORDER: Breadth-first (gives structure level by level)
  * ```
  * 
- * 🔹 ARRAY TO TREE CONSTRUCTION:
+ * 🔹 CONSTRUCTION ALGORITHM PATTERN:
  * ```
- * For index i:
- * - Left child at index 2*i + 1
- * - Right child at index 2*i + 2
- * - Parent at index (i-1)/2
+ * 1. IDENTIFY ROOT: Use preorder (first) or postorder (last)
+ * 2. FIND BOUNDARIES: Locate root in inorder to split left/right
+ * 3. CALCULATE SIZES: Determine left and right subtree sizes
+ * 4. RECURSE: Build left and right subtrees with correct ranges
+ * 5. CONNECT: Link root with constructed subtrees
  * ```
  * 
- * 🔹 SERIALIZED STRING RECONSTRUCTION:
+ * 🔹 INDEX MANAGEMENT:
  * ```
- * 1. Parse serialized string into tokens
- * 2. Use queue or index tracking for reconstruction
- * 3. Handle null markers appropriately
- * 4. Recursively build subtrees
+ * Preorder Index: Moves forward (root → left → right)
+ * Postorder Index: Moves backward (right → left → root)
+ * Inorder Ranges: Define subtree boundaries
+ * HashMap Optimization: Quick inorder position lookup
  * ```
  * 
  * ============================================================================
- * 📋 PROBLEM-SOLVING FRAMEWORK
+ * 📋 CONSTRUCTION FRAMEWORK
  * ============================================================================
  * 
- * STEP 1: ANALYZE INPUT FORMAT
- * - What type of input data is provided?
- * - How is the tree structure encoded in the input?
- * - What constraints or properties must be preserved?
+ * STEP 1: VALIDATE INPUT
+ * - Check if construction is possible
+ * - Verify array lengths match
+ * - Ensure data consistency
  * 
- * STEP 2: IDENTIFY CONSTRUCTION STRATEGY
- * - Which traversal combinations are available?
- * - What algorithm best fits the input format?
- * - How to handle edge cases and null values?
+ * STEP 2: CHOOSE ALGORITHM
+ * - Identify available traversal data
+ * - Select appropriate construction method
+ * - Consider optimization needs
  * 
- * STEP 3: DESIGN RECURSIVE DECOMPOSITION
- * - How to break the problem into subtree constructions?
- * - What information is needed for each recursive call?
- * - How to manage indices and boundaries effectively?
+ * STEP 3: SET UP DATA STRUCTURES
+ * - Create index mappings (HashMap for inorder)
+ * - Initialize index pointers
+ * - Prepare helper data structures
  * 
- * STEP 4: IMPLEMENT INDEX MANAGEMENT
- * - How to track positions in input sequences?
- * - What data structures help with efficient lookups?
- * - How to avoid redundant computations?
+ * STEP 4: IMPLEMENT RECURSIVE CONSTRUCTION
+ * - Define base cases (empty ranges)
+ * - Identify root from preorder/postorder
+ * - Split ranges based on inorder position
+ * - Recursively construct subtrees
  * 
  * STEP 5: OPTIMIZE AND VALIDATE
- * - Can construction be optimized for time or space?
- * - How to validate the constructed tree?
- * - What are the complexity trade-offs?
+ * - Use HashMap for O(1) lookups
+ * - Handle edge cases (single node, empty tree)
+ * - Validate constructed tree if needed
  * 
  * ============================================================================
- * 🎨 BINARY TREE CONSTRUCTION TEMPLATES
+ * 🎨 CONSTRUCTION TEMPLATES
  * ============================================================================
  */
-
-// Definition for a binary tree node
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    
-    TreeNode() {}
-    TreeNode(int val) { this.val = val; }
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
 
 public class TreeConstructionReadingGuide {
     

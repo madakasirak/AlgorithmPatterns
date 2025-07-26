@@ -6,205 +6,180 @@ import java.util.*;
  * 🔄 CYCLE DETECTION PATTERN - COMPREHENSIVE READING GUIDE
  * 
  * ============================================================================
- * 📚 WHAT IS CYCLE DETECTION PATTERN?
+ * 📚 WHAT IS CYCLE DETECTION?
  * ============================================================================
  * 
- * Cycle Detection Pattern involves identifying cycles in graphs to ensure
- * acyclicity, detect dependencies, validate topological ordering, and solve
- * scheduling problems. This pattern is crucial for deadlock detection, course
- * prerequisite validation, dependency resolution, and system design where
- * circular dependencies must be avoided or detected.
- * 
- * The pattern employs different strategies for directed vs undirected graphs,
- * uses DFS with state tracking (white/gray/black coloring), Union-Find for
- * undirected graphs, and topological sorting verification. It's essential
- * for many real-world applications involving precedence constraints.
+ * Cycle Detection involves identifying circular dependencies or loops in data
+ * structures, particularly graphs and linked lists. This pattern is fundamental
+ * for validating graph properties, detecting infinite loops, finding strongly
+ * connected components, and ensuring acyclic constraints in various algorithms.
+ * Understanding cycle detection is crucial for graph algorithms, topological
+ * sorting, and deadlock detection in concurrent systems.
  * 
  * 🔑 CORE PRINCIPLES:
- * 1. BACK EDGE DETECTION: Identify edges that create cycles in DFS traversal
- * 2. STATE TRACKING: Use three-color system (white/gray/black) for directed graphs
- * 3. PARENT TRACKING: Avoid trivial cycles in undirected graphs
- * 4. TOPOLOGICAL VALIDATION: Use in-degree counting for cycle detection
+ * 1. TRAVERSAL TRACKING: Monitor visited nodes during graph traversal
+ * 2. STATE MANAGEMENT: Distinguish between different visiting states
+ * 3. BACK EDGE DETECTION: Identify edges that create cycles
+ * 4. TERMINATION CONDITIONS: Determine when cycle detection is complete
  * 
- * 🔄 CYCLE DETECTION METAPHOR:
- * Think of cycle detection as "dependency validation systems":
- * - Course prerequisites: ensure no circular requirements
- * - Build dependencies: detect circular imports/includes
- * - Task scheduling: identify impossible scheduling due to cycles
- * - Resource allocation: prevent deadlock situations
+ * 🔄 CYCLE METAPHOR:
+ * Think of cycle detection as "traffic pattern analysis":
+ * - Follow roads (edges) between intersections (nodes)
+ * - Mark intersections as you visit them
+ * - If you encounter a marked intersection again, you found a loop
+ * - Different marking systems help detect different types of loops
  * 
  * ============================================================================
  * 🎯 WHEN TO USE CYCLE DETECTION PATTERN
  * ============================================================================
  * 
  * ✅ PERFECT FOR:
- * - Course scheduling and prerequisite validation systems
- * - Build system dependency resolution and circular import detection
- * - Deadlock detection in operating systems and databases
- * - Topological sorting validation and DAG verification
- * - Compiler dependency analysis and symbol resolution
- * - Project management with task dependencies
- * - Financial transaction cycle detection and fraud prevention
- * - Social network analysis for relationship loops
+ * - Graph cycle detection (directed/undirected)
+ * - Linked list loop detection
+ * - Topological sort validation
+ * - Dependency resolution systems
+ * - Deadlock detection
+ * - Course prerequisite validation
+ * - Build system dependency checking
  * 
  * 🔍 LOOK FOR THESE PHRASES:
- * - "Detect cycles in graph"
- * - "Check if graph is acyclic/DAG"
- * - "Course schedule prerequisites"
- * - "Dependency resolution"
- * - "Circular dependencies"
+ * - "Detect cycle"
+ * - "Find loop"
+ * - "Circular dependency"
+ * - "Infinite loop"
+ * - "Course schedule"
+ * - "Prerequisites"
  * - "Deadlock detection"
- * - "Topological order possible"
  * 
  * 🚩 RED FLAGS (Consider Other Approaches):
- * - Tree structures only (trees are acyclic by definition)
- * - Simple connectivity checking (use traversal algorithms)
- * - Path finding without cycle concern (use shortest path algorithms)
- * - Static analysis without dynamic updates (precompute once)
+ * - Tree structures (guaranteed acyclic)
+ * - Simple linear sequences
+ * - Single-pass requirements (use other patterns)
+ * - Real-time constraints (consider simpler algorithms)
  * 
  * ============================================================================
- * 🔄 CYCLE DETECTION PATTERN VARIATIONS
+ * 🔄 CYCLE DETECTION VARIATIONS
  * ============================================================================
  * 
- * 1️⃣ DIRECTED GRAPH CYCLE DETECTION
- * - DFS with three-color state tracking (white/gray/black)
- * - Back edge detection during DFS traversal
- * - Topological sorting with in-degree counting
- * - Strongly connected component analysis
+ * 1️⃣ UNDIRECTED GRAPH CYCLES
+ * - Use DFS with parent tracking
+ * - Union-Find for multiple cycles
+ * - Simple visited array insufficient
  * 
- * 2️⃣ UNDIRECTED GRAPH CYCLE DETECTION
- * - DFS with parent tracking to avoid trivial cycles
- * - Union-Find with cycle detection during edge addition
- * - BFS-based cycle detection with level tracking
- * - Spanning tree construction with cycle avoidance
+ * 2️⃣ DIRECTED GRAPH CYCLES
+ * - Three-color DFS algorithm
+ * - Recursion stack tracking
+ * - Topological sort approach
  * 
- * 3️⃣ FUNCTIONAL DEPENDENCY CYCLES
- * - Recursive function call cycle detection
- * - Module/package circular dependency detection
- * - Variable definition cycle detection
- * - Template instantiation cycle detection
+ * 3️⃣ LINKED LIST CYCLES
+ * - Floyd's Cycle Detection (Fast/Slow pointers)
+ * - Hash set approach for simplicity
+ * - Cycle start detection
  * 
- * 4️⃣ SCHEDULING AND PRECEDENCE CYCLES
- * - Task dependency cycle detection
- * - Course prerequisite cycle validation
- * - Build order dependency resolution
- * - Resource allocation deadlock detection
+ * 4️⃣ FUNCTIONAL GRAPH CYCLES
+ * - Single outgoing edge per node
+ * - Tortoise and Hare algorithm
+ * - Period and offset calculation
  * 
- * 5️⃣ DYNAMIC CYCLE DETECTION
- * - Incremental cycle detection with edge addition
- * - Cycle detection in evolving graphs
- * - Real-time dependency validation
- * - Streaming graph cycle detection
- * 
- * 6️⃣ SPECIALIZED CYCLE DETECTION
- * - Negative cycle detection in weighted graphs
- * - Simple cycle enumeration and counting
- * - Minimum cycle basis computation
- * - Cycle detection with path reconstruction
+ * 5️⃣ MULTI-COMPONENT DETECTION
+ * - Process all disconnected components
+ * - Union-Find for efficient cycle counting
+ * - Parallel cycle detection
  * 
  * ============================================================================
- * 🧠 CORE ALGORITHMS AND STRATEGIES
+ * 🧠 CORE CONCEPTS AND ALGORITHMS
  * ============================================================================
  * 
- * 🔹 DFS CYCLE DETECTION (DIRECTED GRAPH):
+ * 🔹 DFS-BASED DETECTION:
  * ```
- * Three-Color DFS Algorithm:
- *   WHITE: Unvisited node
- *   GRAY: Currently being processed (in DFS stack)
- *   BLACK: Completely processed
+ * WHITE: Unvisited node
+ * GRAY: Currently being processed (in recursion stack)
+ * BLACK: Completely processed
  * 
- *   For each unvisited node:
- *     1. Mark node as GRAY (being processed)
- *     2. For each neighbor:
- *        - If neighbor is GRAY: cycle detected (back edge)
- *        - If neighbor is WHITE: recursively visit
- *     3. Mark node as BLACK (completely processed)
- * 
- * Time: O(V + E), Space: O(V)
+ * Cycle exists if DFS encounters a GRAY node (back edge)
  * ```
  * 
- * 🔹 DFS CYCLE DETECTION (UNDIRECTED GRAPH):
+ * 🔹 UNION-FIND DETECTION:
  * ```
- * Parent-Tracking DFS Algorithm:
- *   For each unvisited node:
- *     1. Mark node as visited
- *     2. For each neighbor:
- *        - If neighbor is visited and not parent: cycle detected
- *        - If neighbor is unvisited: recursively visit with current as parent
+ * For each edge (u, v):
+ *     if find(u) == find(v): cycle detected
+ *     else: union(u, v)
  * 
- * Time: O(V + E), Space: O(V)
+ * Efficient for multiple queries and dynamic graphs
  * ```
  * 
- * 🔹 UNION-FIND CYCLE DETECTION (UNDIRECTED):
+ * 🔹 FLOYD'S ALGORITHM:
  * ```
- * Union-Find Algorithm:
- *   For each edge (u, v):
- *     1. Find root of u and root of v
- *     2. If same root: cycle detected
- *     3. Otherwise: union u and v
+ * slow = head, fast = head
+ * while fast && fast.next:
+ *     slow = slow.next
+ *     fast = fast.next.next
+ *     if slow == fast: cycle detected
  * 
- * Time: O(E * α(V)), Space: O(V)
- * where α is inverse Ackermann function
+ * Space-efficient for linked lists
  * ```
  * 
- * 🔹 TOPOLOGICAL SORT CYCLE DETECTION:
+ * 🔹 COMPLEXITY ANALYSIS:
  * ```
- * Kahn's Algorithm for Cycle Detection:
- *   1. Calculate in-degree for all vertices
- *   2. Add vertices with in-degree 0 to queue
- *   3. While queue not empty:
- *      a. Remove vertex and decrement neighbors' in-degrees
- *      b. Add vertices with in-degree 0 to queue
- *   4. If processed vertices < total vertices: cycle exists
+ * Time Complexities:
+ * - DFS: O(V + E) for graph traversal
+ * - Union-Find: O(E * α(V)) with path compression
+ * - Floyd's: O(n) for linked list
  * 
- * Time: O(V + E), Space: O(V)
+ * Space Complexities:
+ * - DFS: O(V) for recursion stack and state
+ * - Union-Find: O(V) for parent array
+ * - Floyd's: O(1) constant space
  * ```
  * 
  * ============================================================================
- * 📋 ALGORITHM SELECTION FRAMEWORK
+ * 📋 CYCLE DETECTION FRAMEWORK
  * ============================================================================
  * 
  * STEP 1: IDENTIFY GRAPH TYPE
- * - Directed vs undirected graph?
- * - Sparse vs dense graph structure?
- * - Static vs dynamic graph updates?
+ * - Is the graph directed or undirected?
+ * - Are there multiple components?
+ * - What is the edge density?
+ * - Are there self-loops allowed?
  * 
- * STEP 2: DETERMINE DETECTION REQUIREMENTS
- * - Just detect cycle existence?
- * - Need to find actual cycle?
- * - Multiple cycle detection needed?
- * - Real-time detection vs batch processing?
+ * STEP 2: CHOOSE DETECTION ALGORITHM
+ * - DFS: General purpose, good for single detection
+ * - Union-Find: Multiple queries, dynamic updates
+ * - Floyd's: Space-constrained linked list problems
+ * - BFS: When recursion depth is a concern
  * 
- * STEP 3: CHOOSE APPROPRIATE ALGORITHM
- * - DFS: General purpose, good for cycle finding
- * - Union-Find: Efficient for undirected graphs
- * - Topological Sort: Natural for scheduling problems
- * - Specialized: For specific cycle types
+ * STEP 3: IMPLEMENT STATE TRACKING
+ * - Choose appropriate state representation
+ * - Handle visited/processing/completed states
+ * - Manage parent relationships if needed
+ * - Track cycle information if required
  * 
- * STEP 4: OPTIMIZE FOR USE CASE
- * - Early termination when first cycle found?
- * - Incremental updates for dynamic graphs?
- * - Memory optimization for large graphs?
+ * STEP 4: HANDLE EDGE CASES
+ * - Empty graphs or single nodes
+ * - Self-loops and parallel edges
+ * - Disconnected components
+ * - Invalid input validation
  * 
- * STEP 5: HANDLE EDGE CASES
- * - Self-loops, parallel edges
- * - Disconnected graph components
- * - Empty graphs and single nodes
+ * STEP 5: OPTIMIZE FOR USE CASE
+ * - Batch vs. single query optimization
+ * - Memory vs. time trade-offs
+ * - Early termination conditions
+ * - Preprocessing opportunities
  * 
  * ============================================================================
- * 🎨 CYCLE DETECTION ALGORITHM TEMPLATES
+ * 🎨 CYCLE DETECTION TEMPLATES
  * ============================================================================
  */
 
 public class CycleDetectionReadingGuide {
-    
+
+    // Three-color DFS state representation
+    enum Color { WHITE, GRAY, BLACK }
+
     /**
      * 🎯 DIRECTED GRAPH CYCLE DETECTION TEMPLATES
      */
     public static class DirectedGraphCycles {
-        
-        // Three-color DFS state representation
-        enum Color { WHITE, GRAY, BLACK }
         
         /**
          * DFS-based Cycle Detection with Three-Color Algorithm
@@ -649,10 +624,10 @@ public class CycleDetectionReadingGuide {
     // ============================================================================
     
     /**
-     * ❌ PITFALL 1: Forgetting Parent Check in Undirected Graphs
-     * Always skip parent node to avoid trivial cycles
+     * ❌ PITFALL 1: Not Skipping Parent in Undirected Graph DFS
+     * Skip immediate parent to avoid detecting trivial back edges
      */
-    public static void parentCheckExample() {
+    public static void parentCheckExample(List<List<Integer>> graph, int node, int parent) {
         // Correct: Skip parent to avoid trivial cycle
         for (int neighbor : graph.get(node)) {
             if (neighbor == parent) continue; // Essential check
@@ -667,8 +642,7 @@ public class CycleDetectionReadingGuide {
      * Use proper three-color system for directed graph cycle detection
      */
     public static void stateManagementExample() {
-        // Correct: Three-color system
-        enum Color { WHITE, GRAY, BLACK }
+        // Correct: Three-color system is now defined at class level
         // WHITE: unvisited, GRAY: processing, BLACK: completed
         
         // Incorrect: Binary visited array insufficient for directed graphs

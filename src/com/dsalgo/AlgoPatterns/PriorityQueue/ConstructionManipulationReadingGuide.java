@@ -685,17 +685,23 @@ public class ConstructionManipulationReadingGuide {
      */
     public static void constraintFeasibilityExample() {
         // Correct: Check feasibility first
-        public static boolean canRearrange(String s, int k) {
-            Map<Character, Integer> count = new HashMap<>();
-            for (char c : s.toCharArray()) {
-                count.put(c, count.getOrDefault(c, 0) + 1);
-            }
-            
-            int maxFreq = Collections.max(count.values());
-            return maxFreq <= (s.length() + k - 1) / k; // Ceiling division
-        }
+        // Example: canRearrange method should be a separate static method
+        System.out.println("Checking constraint feasibility before construction");
         
         // Incorrect: Attempting construction without feasibility check
+    }
+    
+    /**
+     * Helper method for constraint feasibility checking
+     */
+    public static boolean canRearrange(String s, int k) {
+        Map<Character, Integer> count = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            count.put(c, count.getOrDefault(c, 0) + 1);
+        }
+        
+        int maxFreq = Collections.max(count.values());
+        return maxFreq <= (s.length() + k - 1) / k; // Ceiling division
     }
     
     /**

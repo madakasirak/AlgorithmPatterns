@@ -686,7 +686,7 @@ public class ConnectedComponentsReadingGuide {
      * ❌ PITFALL 1: Forgetting to Reset Visited State
      * Use separate visited tracking for each component search
      */
-    public static void visitedStateExample() {
+    public static void visitedStateExample(int n) {
         // Correct: Fresh visited array for each algorithm run
         boolean[] visited = new boolean[n];
         // Use and modify visited during single algorithm execution
@@ -698,15 +698,22 @@ public class ConnectedComponentsReadingGuide {
      * ❌ PITFALL 2: Modifying Input During Traversal
      * Be careful when using input grid as visited marker
      */
-    public static void inputModificationExample() {
+    public static void inputModificationExample(char[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+        
         // Correct: Use separate visited array
         boolean[][] visited = new boolean[rows][cols];
         
         // Alternative: Restore original values after modification
-        char originalValue = grid[i][j];
-        grid[i][j] = '0'; // Temporary modification
-        // ... traversal ...
-        grid[i][j] = originalValue; // Restore if needed
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                char originalValue = grid[i][j];
+                grid[i][j] = '0'; // Temporary modification
+                // ... traversal ...
+                grid[i][j] = originalValue; // Restore if needed
+            }
+        }
     }
     
     // ============================================================================

@@ -38,7 +38,7 @@ class TreeNode {
     }
 }
 
-public class PriorityQueue {
+public class PriorityQueueProblems {
     
     // ============================================================================
     // 🟢 EASY PROBLEMS - Basic Priority Queue Operations

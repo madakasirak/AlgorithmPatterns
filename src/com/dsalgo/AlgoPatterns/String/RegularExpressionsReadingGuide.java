@@ -1,147 +1,184 @@
 package com.dsalgo.AlgoPatterns.String;
 
+import java.util.*;
+
 /**
- * ==================================================================================
- *                     REGULAR EXPRESSIONS PATTERN - READING GUIDE
- * ==================================================================================
+ * 🔣 REGULAR EXPRESSIONS PATTERN - COMPREHENSIVE READING GUIDE
  * 
- * OVERVIEW:
- * Regular Expressions (Regex) is a powerful pattern-matching technique used for
- * string validation, pattern matching, and text processing. In algorithmic problems,
- * regex patterns are often implemented using dynamic programming or recursive
- * approaches rather than built-in regex engines. This pattern is essential for
- * problems involving complex string matching with wildcards, repetitions, and
- * character classes.
+ * ============================================================================
+ * 📚 WHAT ARE REGULAR EXPRESSIONS IN ALGORITHMIC PROBLEMS?
+ * ============================================================================
  * 
- * ==================================================================================
- *                         WHEN TO USE REGULAR EXPRESSIONS
- * ==================================================================================
+ * Regular Expressions in algorithmic contexts involve implementing pattern matching
+ * and validation logic without using built-in regex engines. These problems require
+ * understanding finite state machines, dynamic programming, backtracking, and string
+ * processing to validate strings against complex patterns, match sequences, and
+ * implement custom validation rules for various formats.
  * 
- * 🎯 PATTERN RECOGNITION:
- * ✅ String pattern matching with wildcards ('.' for any character)
- * ✅ Repetition patterns ('*' for zero or more occurrences)
- * ✅ String validation against complex rules
- * ✅ Text processing with multiple constraints
- * ✅ Pattern matching with character classes
- * ✅ Problems involving "matching", "validation", "pattern"
- * ✅ Input format validation (emails, phone numbers, etc.)
- * ✅ Complex string parsing requirements
- * ✅ State machine-like string processing
- * ✅ Backtracking pattern matching
+ * 🔑 CORE PRINCIPLES:
+ * 1. PATTERN DECOMPOSITION: Break complex patterns into manageable components
+ * 2. STATE MANAGEMENT: Track current matching state and possibilities
+ * 3. BACKTRACKING: Explore alternative matching paths when needed
+ * 4. VALIDATION LOGIC: Implement rules for acceptable character sequences
  * 
- * 🚨 KEY PHRASES TO LOOK FOR:
- * ✅ "pattern matching", "regex", "regular expression"
- * ✅ "validation", "format checking"
- * ✅ "wildcard", "any character", "zero or more"
- * ✅ "matches pattern", "follows rules"
- * ✅ ".' (any character)", "'*' (zero or more)"
- * ✅ "email validation", "phone validation"
- * ✅ "text processing", "string parsing"
+ * 🎭 PATTERN METAPHOR:
+ * Think of regex problems as "language recognition":
+ * - Define grammar rules for valid strings
+ * - Use state machines to track parsing progress
+ * - Handle special characters as control instructions
+ * - Validate entire sequence follows established rules
  * 
- * 🚨 RED FLAGS (when NOT the primary solution):
- * ❌ Simple string equality checks
- * ❌ Basic substring search (use KMP or simple search)
- * ❌ Character frequency problems (use HashMap)
- * ❌ Dynamic programming on subsequences (different pattern)
+ * ============================================================================
+ * 🎯 WHEN TO USE REGULAR EXPRESSIONS PATTERN
+ * ============================================================================
  * 
- * ==================================================================================
- *                        REGULAR EXPRESSIONS VARIATIONS
- * ==================================================================================
+ * ✅ PERFECT FOR:
+ * - String pattern matching without built-in regex
+ * - Custom validation rules implementation
+ * - Finite state machine problems
+ * - Complex string format validation
+ * - Pattern matching with wildcards
+ * - Email/phone number validation
+ * - Mathematical expression parsing
+ * 
+ * 🔍 LOOK FOR THESE PHRASES:
+ * - "Pattern matching"
+ * - "String validation"
+ * - "Match against pattern"
+ * - "Valid format"
+ * - "Implement regex"
+ * - "Pattern recognition"
+ * - "Custom validation"
+ * 
+ * 🚩 RED FLAGS (Consider Other Approaches):
+ * - Simple string operations (use string methods)
+ * - Built-in regex allowed (use standard library)
+ * - Performance-critical matching (consider preprocessing)
+ * - Complex grammar parsing (use dedicated parsers)
+ * 
+ * ============================================================================
+ * 🔄 REGULAR EXPRESSIONS VARIATIONS
+ * ============================================================================
+ * 
+ * 1️⃣ WILDCARD MATCHING
+ * - Simple patterns with * and ?
+ * - Use dynamic programming
+ * - Handle greedy vs non-greedy matching
+ * 
+ * 2️⃣ REGEX PATTERN MATCHING
+ * - Full regex with . and *
+ * - Recursive backtracking approach
+ * - State machine implementation
+ * 
+ * 3️⃣ FORMAT VALIDATION
+ * - Email, phone, date validation
+ * - State machine with specific rules
+ * - Character class validation
+ * 
+ * 4️⃣ MATHEMATICAL EXPRESSIONS
+ * - Number format validation
+ * - Expression parsing
+ * - Operator precedence handling
+ * 
+ * 5️⃣ PATTERN REPLACEMENT
+ * - Find and replace with patterns
+ * - Capture groups implementation
+ * - Template substitution
+ * 
+ * ============================================================================
+ * 🧠 CORE CONCEPTS AND ALGORITHMS
+ * ============================================================================
+ * 
+ * 🔹 DYNAMIC PROGRAMMING APPROACH:
+ * ```
+ * dp[i][j] = string[0..i-1] matches pattern[0..j-1]
+ * 
+ * Base cases:
+ * - dp[0][0] = true (empty matches empty)
+ * - dp[i][0] = false (non-empty string, empty pattern)
+ * - dp[0][j] = handle patterns that can match empty
+ * 
+ * Transitions:
+ * - Character match: dp[i][j] = dp[i-1][j-1]
+ * - Wildcard: dp[i][j] = dp[i-1][j] || dp[i][j-1]
+ * - Star operator: dp[i][j] = dp[i][j-2] || (match && dp[i-1][j])
+ * ```
+ * 
+ * 🔹 STATE MACHINE APPROACH:
+ * ```
+ * Define States: START, NUMBER, DECIMAL, EXPONENT, etc.
+ * 
+ * For each character:
+ * 1. Determine valid transitions from current state
+ * 2. Update state based on character type
+ * 3. Track additional flags (hasNumber, hasDecimal)
+ * 4. Validate final state is accepting
+ * ```
+ * 
+ * 🔹 BACKTRACKING APPROACH:
+ * ```
+ * function match(string, pattern, i, j):
+ *     if j == pattern.length: return i == string.length
+ *     
+ *     first_match = (i < string.length && 
+ *                   (pattern[j] == string[i] || pattern[j] == '.'))
+ *     
+ *     if j+1 < pattern.length && pattern[j+1] == '*':
+ *         return match(string, pattern, i, j+2) ||  // zero occurrences
+ *                (first_match && match(string, pattern, i+1, j))  // one+ occurrences
+ *     else:
+ *         return first_match && match(string, pattern, i+1, j+1)
+ * ```
+ * 
+ * ============================================================================
+ * 📋 REGULAR EXPRESSIONS FRAMEWORK
+ * ============================================================================
+ * 
+ * STEP 1: ANALYZE PATTERN REQUIREMENTS
+ * - What characters are allowed?
+ * - Are there special characters or operators?
+ * - What are the validation rules?
+ * - How complex is the pattern structure?
+ * 
+ * STEP 2: CHOOSE IMPLEMENTATION APPROACH
+ * - Simple patterns: Use state machine
+ * - Complex patterns: Use dynamic programming
+ * - Recursive patterns: Use backtracking
+ * - Performance critical: Consider preprocessing
+ * 
+ * STEP 3: DESIGN STATE REPRESENTATION
+ * - Define states for different pattern parts
+ * - Identify transition conditions
+ * - Handle special cases and edge conditions
+ * - Plan for error states and validation
+ * 
+ * STEP 4: IMPLEMENT CORE LOGIC
+ * - Process input character by character
+ * - Maintain state and tracking variables
+ * - Handle backtracking if necessary
+ * - Validate final state or position
+ * 
+ * STEP 5: TEST AND OPTIMIZE
+ * - Test edge cases (empty strings, invalid patterns)
+ * - Verify against known valid/invalid examples
+ * - Optimize for time and space complexity
+ * - Handle performance bottlenecks
+ * 
+ * ============================================================================
+ * 🎨 REGULAR EXPRESSIONS TEMPLATES
+ * ============================================================================
  */
+
 public class RegularExpressionsReadingGuide {
 
-    /**
-     * ================================================================================
-     *                         VARIATION 1: BASIC PATTERN MATCHING
-     * ================================================================================
-     * 
-     * PATTERN:
-     * 1. Implement recursive or DP solution for pattern matching
-     * 2. Handle '.' wildcard (matches any single character)
-     * 3. Handle '*' quantifier (zero or more of preceding character)
-     * 4. Base cases: empty string and pattern
-     * 
-     * USE CASES:
-     * - Basic regex matching with '.' and '*'
-     * - Simple pattern validation
-     * - Wildcard string matching
-     * - Text filtering based on patterns
-     */
-    
-    // EXAMPLE: Regular Expression Matching (Recursive)
-    public static boolean isMatch(String s, String p) {
-        return isMatchHelper(s, p, 0, 0);
-    }
-    
-    private static boolean isMatchHelper(String s, String p, int i, int j) {
-        // Base case: pattern exhausted
-        if (j >= p.length()) {
-            return i >= s.length();
-        }
-        
-        // Check if current characters match
-        boolean currentMatch = (i < s.length()) && 
-                              (p.charAt(j) == '.' || p.charAt(j) == s.charAt(i));
-        
-        // Handle '*' quantifier
-        if (j + 1 < p.length() && p.charAt(j + 1) == '*') {
-            // Two choices: use * (zero occurrences) or match current and continue
-            return isMatchHelper(s, p, i, j + 2) || 
-                   (currentMatch && isMatchHelper(s, p, i + 1, j));
-        } else {
-            // No '*', must match current character
-            return currentMatch && isMatchHelper(s, p, i + 1, j + 1);
-        }
+    // State machine states for number validation
+    enum State {
+        START, SIGN, INTEGER, DECIMAL, FRACTION, EXP, EXP_SIGN, EXP_NUM
     }
 
     /**
      * ================================================================================
-     *                       VARIATION 2: DYNAMIC PROGRAMMING APPROACH
-     * ================================================================================
-     * 
-     * PATTERN:
-     * 1. Create 2D DP table for string and pattern indices
-     * 2. Fill table bottom-up using recurrence relation
-     * 3. Handle edge cases and special characters
-     * 4. Optimize space if needed (1D DP)
-     * 
-     * USE CASES:
-     * - Optimized regex matching
-     * - Pattern matching with memoization
-     * - Large input string processing
-     * - When recursion depth is a concern
-     */
-    
-    // EXAMPLE: Regular Expression Matching (DP)
-    public static boolean isMatchDP(String s, String p) {
-        int m = s.length(), n = p.length();
-        boolean[][] dp = new boolean[m + 1][n + 1];
-        
-        // Base case: empty string matches empty pattern
-        dp[m][n] = true;
-        
-        // Fill DP table from bottom-right to top-left
-        for (int i = m; i >= 0; i--) {
-            for (int j = n - 1; j >= 0; j--) {
-                boolean currentMatch = (i < m) && 
-                                      (p.charAt(j) == '.' || p.charAt(j) == s.charAt(i));
-                
-                if (j + 1 < n && p.charAt(j + 1) == '*') {
-                    // Handle '*' quantifier
-                    dp[i][j] = dp[i][j + 2] || (currentMatch && dp[i + 1][j]);
-                } else {
-                    // Regular character matching
-                    dp[i][j] = currentMatch && dp[i + 1][j + 1];
-                }
-            }
-        }
-        
-        return dp[0][0];
-    }
-
-    /**
-     * ================================================================================
-     *                         VARIATION 3: WILDCARD MATCHING
+     *                        VARIATION 1: WILDCARD MATCHING
      * ================================================================================
      * 
      * PATTERN:
@@ -190,7 +227,52 @@ public class RegularExpressionsReadingGuide {
 
     /**
      * ================================================================================
-     *                         VARIATION 4: STRING VALIDATION
+     *                         VARIATION 2: DYNAMIC PROGRAMMING APPROACH
+     * ================================================================================
+     * 
+     * PATTERN:
+     * 1. Create 2D DP table for string and pattern indices
+     * 2. Fill table bottom-up using recurrence relation
+     * 3. Handle edge cases and special characters
+     * 4. Optimize space if needed (1D DP)
+     * 
+     * USE CASES:
+     * - Optimized regex matching
+     * - Pattern matching with memoization
+     * - Large input string processing
+     * - When recursion depth is a concern
+     */
+    
+    // EXAMPLE: Regular Expression Matching (DP)
+    public static boolean isMatchDP(String s, String p) {
+        int m = s.length(), n = p.length();
+        boolean[][] dp = new boolean[m + 1][n + 1];
+        
+        // Base case: empty string matches empty pattern
+        dp[m][n] = true;
+        
+        // Fill DP table from bottom-right to top-left
+        for (int i = m; i >= 0; i--) {
+            for (int j = n - 1; j >= 0; j--) {
+                boolean currentMatch = (i < m) && 
+                                      (p.charAt(j) == '.' || p.charAt(j) == s.charAt(i));
+                
+                if (j + 1 < n && p.charAt(j + 1) == '*') {
+                    // Handle '*' quantifier
+                    dp[i][j] = dp[i][j + 2] || (currentMatch && dp[i + 1][j]);
+                } else {
+                    // Regular character matching
+                    dp[i][j] = currentMatch && dp[i + 1][j + 1];
+                }
+            }
+        }
+        
+        return dp[0][0];
+    }
+
+    /**
+     * ================================================================================
+     *                         VARIATION 3: STRING VALIDATION
      * ================================================================================
      * 
      * PATTERN:
@@ -316,11 +398,6 @@ public class RegularExpressionsReadingGuide {
         if (s == null || s.trim().isEmpty()) return false;
         
         s = s.trim();
-        
-        // States: START, SIGN, INTEGER, DECIMAL, FRACTION, EXP, EXP_SIGN, EXP_NUM
-        enum State {
-            START, SIGN, INTEGER, DECIMAL, FRACTION, EXP, EXP_SIGN, EXP_NUM
-        }
         
         State state = State.START;
         boolean hasNum = false;

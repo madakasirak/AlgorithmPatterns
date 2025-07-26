@@ -6,103 +6,85 @@ import java.util.*;
  * 🔥 PRIORITY QUEUE PATTERN - COMPREHENSIVE READING GUIDE
  * 
  * ============================================================================
- * 📚 WHAT IS PRIORITY QUEUE PATTERN?
+ * 📚 WHAT IS THE PRIORITY QUEUE PATTERN?
  * ============================================================================
  * 
- * Priority Queue Pattern involves using heap-based data structures to efficiently
- * manage elements based on their priority, enabling quick access to the highest
- * or lowest priority element. This pattern is fundamental for scheduling algorithms,
- * optimization problems, graph algorithms, stream processing, and any scenario
- * where elements need to be processed in priority order rather than insertion order.
- * 
- * The pattern leverages the heap property to maintain partial ordering, providing
- * O(log n) insertion and deletion of priority elements, and O(1) access to the
- * top priority element. It's essential for problems involving "best", "top-k",
- * "nearest", and "optimal" solutions.
+ * The Priority Queue Pattern leverages heap data structures to efficiently manage
+ * elements based on priority rather than insertion order. This pattern excels at
+ * maintaining sorted order for streaming data, finding extreme values, scheduling
+ * tasks, and solving optimization problems where order matters. Priority queues
+ * provide O(log n) insertion and deletion while maintaining the most important
+ * element at the root.
  * 
  * 🔑 CORE PRINCIPLES:
- * 1. PRIORITY ORDERING: Maintain elements sorted by priority, not insertion order
+ * 1. PRIORITY ORDERING: Elements ordered by importance, not insertion time
  * 2. EFFICIENT ACCESS: O(1) access to highest/lowest priority element
- * 3. DYNAMIC UPDATES: Efficiently add/remove elements while maintaining order
- * 4. HEAP PROPERTY: Utilize heap structure for optimal performance characteristics
+ * 3. BALANCED OPERATIONS: O(log n) insert/delete maintains heap property
+ * 4. FLEXIBLE COMPARISON: Custom comparators define priority criteria
  * 
- * 🔥 PRIORITY QUEUE METAPHOR:
- * Think of priority queues as "smart waiting systems":
- * - Hospital emergency room: patients treated by severity, not arrival time
- * - Airport boarding: first class, business, then economy regardless of check-in time
- * - Task scheduler: high-priority tasks executed before low-priority ones
- * - Resource allocation: distribute limited resources to highest priority needs
+ * 🏔️ HEAP METAPHOR:
+ * Think of a priority queue as a "corporate hierarchy":
+ * - CEO (root) has highest priority and is always accessible
+ * - Each level maintains proper authority relationships
+ * - Promotions/demotions (insert/delete) maintain structure
+ * - New employees find their proper level in the hierarchy
  * 
  * ============================================================================
  * 🎯 WHEN TO USE PRIORITY QUEUE PATTERN
  * ============================================================================
  * 
  * ✅ PERFECT FOR:
- * - Finding top-k elements (largest, smallest, most frequent)
- * - Graph algorithms (Dijkstra's shortest path, Prim's MST)
- * - Scheduling and task management systems
- * - Stream processing with priority-based filtering
- * - Optimization problems requiring best-first search
- * - Merge operations on multiple sorted sequences
- * - Event simulation and discrete event systems
- * - Resource allocation and load balancing
+ * - Finding kth largest/smallest elements
+ * - Merging k sorted lists/arrays
+ * - Real-time median calculation
+ * - Task scheduling with priorities
+ * - Graph algorithms (Dijkstra's, Prim's)
+ * - Top-k frequent elements
+ * - Sliding window maximum/minimum
  * 
  * 🔍 LOOK FOR THESE PHRASES:
- * - "Find the k largest/smallest elements"
- * - "Process elements in priority order"
- * - "Nearest/closest/optimal solution"
- * - "Merge k sorted arrays/lists"
- * - "Schedule tasks by priority"
- * - "Real-time top-k monitoring"
- * - "Median in streaming data"
- * - "Shortest path/minimum cost"
+ * - "Find the kth largest/smallest"
+ * - "Top k elements"
+ * - "Merge k sorted..."
+ * - "Running median"
+ * - "Schedule tasks with priority"
+ * - "Find minimum/maximum in sliding window"
+ * - "Shortest path" or "minimum spanning tree"
  * 
  * 🚩 RED FLAGS (Consider Other Approaches):
- * - All elements needed in order (use full sorting)
- * - Only need single min/max (use simple comparison)
- * - FIFO/LIFO processing (use queue/stack)
- * - Random access needed (use arrays/lists)
- * - Small, fixed dataset (simple iteration might suffice)
+ * - Need to access arbitrary elements (use HashMap)
+ * - Frequent updates to priorities (consider indexed heaps)
+ * - Small, fixed-size data (simple sorting might be better)
+ * - Need FIFO/LIFO behavior (use Queue/Stack)
  * 
  * ============================================================================
- * 🔄 PRIORITY QUEUE PATTERN VARIATIONS
+ * 🔄 PRIORITY QUEUE VARIATIONS
  * ============================================================================
  * 
- * 1️⃣ TOP-K PROBLEMS
- * - Min-heap for k largest elements
- * - Max-heap for k smallest elements
- * - Sliding window top-k monitoring
- * - Frequency-based top-k analysis
+ * 1️⃣ MIN-HEAP (Default Java PriorityQueue)
+ * - Smallest element at root
+ * - Use for: kth largest, bottom-k elements
+ * - Construction: new java.util.PriorityQueue<>()
  * 
- * 2️⃣ MERGE OPERATIONS
- * - Merge k sorted arrays/lists
- * - Stream merging from multiple sources
- * - Priority-based data aggregation
- * - Multi-way merge algorithms
+ * 2️⃣ MAX-HEAP (Reverse Comparator)
+ * - Largest element at root  
+ * - Use for: kth smallest, top-k elements
+ * - Construction: new java.util.PriorityQueue<>(Collections.reverseOrder())
  * 
- * 3️⃣ GRAPH ALGORITHMS
- * - Dijkstra's shortest path (min-heap)
- * - Prim's minimum spanning tree
- * - A* search algorithm
- * - Best-first search strategies
+ * 3️⃣ CUSTOM PRIORITY
+ * - Elements ordered by custom criteria
+ * - Use for: complex objects, multiple priorities
+ * - Construction: new java.util.PriorityQueue<>((a, b) -> customComparison)
  * 
- * 4️⃣ SCHEDULING SYSTEMS
- * - Task scheduling by priority/deadline
- * - CPU scheduling algorithms
- * - Event-driven simulation
- * - Resource allocation optimization
+ * 4️⃣ BOUNDED HEAP
+ * - Fixed-size heap with overflow handling
+ * - Use for: top-k problems with memory constraints
+ * - Manually maintain size <= k
  * 
- * 5️⃣ STREAMING ALGORITHMS
- * - Running median calculation
- * - Online top-k monitoring
- * - Sliding window statistics
- * - Real-time data processing
- * 
- * 6️⃣ OPTIMIZATION PROBLEMS
- * - Huffman coding tree construction
- * - Interval scheduling maximization
- * - Greedy algorithm optimization
- * - Dynamic programming with priority
+ * 5️⃣ DUAL HEAP SYSTEM
+ * - Two heaps working together (min + max)
+ * - Use for: running median, balanced partitioning
+ * - Balance sizes to maintain median access
  * 
  * ============================================================================
  * 🧠 CORE CONCEPTS AND ALGORITHMS
@@ -110,79 +92,73 @@ import java.util.*;
  * 
  * 🔹 HEAP OPERATIONS:
  * ```
- * Insert (O(log n)):
- *   1. Add element to end of heap
- *   2. Bubble up to maintain heap property
- * 
- * Extract Min/Max (O(log n)):
- *   1. Remove root element
- *   2. Move last element to root
- *   3. Bubble down to restore heap property
- * 
- * Peek (O(1)):
- *   Return root element without removal
+ * INSERT (offer): Add element, bubble up to maintain heap property - O(log n)
+ * EXTRACT (poll): Remove root, bubble down to restore heap - O(log n)  
+ * PEEK: Access root element without removal - O(1)
+ * SIZE: Get current number of elements - O(1)
  * ```
  * 
- * 🔹 TOP-K ALGORITHM:
+ * 🔹 COMMON ALGORITHMS:
  * ```
- * For k largest elements:
- *   Use min-heap of size k
- *   For each element:
- *     If heap.size() < k: add element
- *     Else if element > heap.peek(): replace root
+ * TOP-K PATTERN:
+ * 1. Use min-heap of size k for k-largest problems
+ * 2. Use max-heap of size k for k-smallest problems
+ * 3. Maintain heap size <= k by removing root when exceeded
  * 
- * For k smallest elements:
- *   Use max-heap of size k (opposite logic)
- * ```
+ * MERGE PATTERN:
+ * 1. Add first element from each list to heap
+ * 2. Extract minimum, add to result
+ * 3. Add next element from same list if available
+ * 4. Repeat until heap is empty
  * 
- * 🔹 MERGE K SORTED ARRAYS:
- * ```
- * Use min-heap storing (value, arrayIndex, elementIndex)
- * Initialize heap with first element from each array
- * While heap not empty:
- *   Extract minimum element
- *   Add to result
- *   Add next element from same array to heap
+ * MEDIAN PATTERN:
+ * 1. Use max-heap for smaller half (left side)
+ * 2. Use min-heap for larger half (right side)  
+ * 3. Balance sizes: |left| - |right| <= 1
+ * 4. Median is root of larger heap or average of both roots
  * ```
  * 
- * 🔹 RUNNING MEDIAN:
+ * 🔹 COMPLEXITY ANALYSIS:
  * ```
- * Use two heaps:
- *   maxHeap: stores smaller half (max at top)
- *   minHeap: stores larger half (min at top)
+ * Time Complexities:
+ * - Insert/Delete: O(log n)
+ * - Peek: O(1)
+ * - Build heap from array: O(n)
  * 
- * Balance heaps to maintain size difference ≤ 1
- * Median: root of larger heap or average of both roots
+ * Space Complexities:
+ * - Heap storage: O(n) for n elements
+ * - Top-k problems: O(k) space
+ * - Merge k lists: O(k) space
  * ```
  * 
  * ============================================================================
- * 📋 PROBLEM-SOLVING FRAMEWORK
+ * 📋 PRIORITY QUEUE FRAMEWORK
  * ============================================================================
  * 
- * STEP 1: IDENTIFY PRIORITY REQUIREMENTS
- * - What determines element priority?
- * - Need min-heap, max-heap, or custom comparator?
- * - Is priority static or dynamic?
+ * STEP 1: IDENTIFY PRIORITY CRITERIA
+ * - What makes one element "higher priority" than another?
+ * - Do you need minimum or maximum priority at root?
+ * - Are there multiple priority levels or custom comparisons?
  * 
- * STEP 2: DETERMINE HEAP SIZE STRATEGY
- * - Fixed size k for top-k problems?
- * - Unbounded for complete ordering?
- * - Multiple heaps for complex requirements?
+ * STEP 2: CHOOSE HEAP TYPE
+ * - Min-heap: for problems asking for largest elements
+ * - Max-heap: for problems asking for smallest elements  
+ * - Custom comparator: for complex priority rules
  * 
- * STEP 3: CHOOSE HEAP CONFIGURATION
- * - Single heap: simple priority ordering
- * - Dual heap: median finding, range queries
- * - Multiple heaps: complex multi-criteria problems
+ * STEP 3: DETERMINE SIZE CONSTRAINTS
+ * - Fixed size k: for top-k problems
+ * - Unbounded: for complete sorting or merging
+ * - Balanced: for median-finding problems
  * 
- * STEP 4: IMPLEMENT HEAP OPERATIONS
- * - Insert: maintain heap property efficiently
- * - Extract: handle root removal and rebalancing
- * - Update: modify priorities if needed
+ * STEP 4: IMPLEMENT CORE LOGIC
+ * - Initialize heap with appropriate comparator
+ * - Process elements maintaining heap constraints
+ * - Extract results in required order
  * 
- * STEP 5: OPTIMIZE FOR USE CASE
- * - Batch operations when possible
- * - Consider heap construction vs incremental building
- * - Handle edge cases (empty heap, duplicate priorities)
+ * STEP 5: OPTIMIZE FOR SPECIFIC REQUIREMENTS
+ * - Memory: use bounded heaps for large datasets
+ * - Performance: consider batch operations
+ * - Functionality: add custom methods as needed
  * 
  * ============================================================================
  * 🎨 PRIORITY QUEUE TEMPLATES
@@ -190,19 +166,28 @@ import java.util.*;
  */
 
 public class PriorityQueueReadingGuide {
-    
+
     /**
-     * 🏆 TOP-K PROBLEMS TEMPLATES
+     * ================================================================================
+     *                          VARIATION 1: TOP-K PROBLEMS
+     * ================================================================================
+     * 
+     * PATTERN:
+     * Use heap of size k to maintain top-k elements efficiently
+     * - Min-heap for k-largest elements (root is kth largest)
+     * - Max-heap for k-smallest elements (root is kth smallest)
+     * 
+     * USE CASES:
+     * - Kth largest element in array
+     * - Top k frequent elements  
+     * - K closest points to origin
+     * - Find k largest numbers in stream
      */
+    
+    // TEMPLATE: Top K Elements 
     public static class TopKTemplates {
-        
-        /**
-         * Find K Largest Elements
-         * Strategy: Use min-heap of size k
-         */
         public static List<Integer> findKLargest(int[] nums, int k) {
-            // Min-heap to store k largest elements
-            PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+            java.util.PriorityQueue<Integer> minHeap = new java.util.PriorityQueue<>();
             
             for (int num : nums) {
                 if (minHeap.size() < k) {
@@ -216,13 +201,8 @@ public class PriorityQueueReadingGuide {
             return new ArrayList<>(minHeap);
         }
         
-        /**
-         * Find K Smallest Elements
-         * Strategy: Use max-heap of size k
-         */
         public static List<Integer> findKSmallest(int[] nums, int k) {
-            // Max-heap to store k smallest elements
-            PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+            java.util.PriorityQueue<Integer> maxHeap = new java.util.PriorityQueue<>(Collections.reverseOrder());
             
             for (int num : nums) {
                 if (maxHeap.size() < k) {
@@ -235,60 +215,50 @@ public class PriorityQueueReadingGuide {
             
             return new ArrayList<>(maxHeap);
         }
-        
-        /**
-         * Top K Frequent Elements
-         * Strategy: Use min-heap with frequency comparison
-         */
-        public static List<Integer> topKFrequent(int[] nums, int k) {
-            // Count frequencies
-            Map<Integer, Integer> frequencyMap = new HashMap<>();
+    }
+
+    // TEMPLATE: Kth Largest Element
+    public static class KthLargestTemplate {
+        public static int findKthLargest(int[] nums, int k) {
+            // Min-heap of size k
+            java.util.PriorityQueue<Integer> minHeap = new java.util.PriorityQueue<>();
+            
             for (int num : nums) {
-                frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
-            }
-            
-            // Min-heap based on frequency
-            PriorityQueue<Integer> minHeap = new PriorityQueue<>(
-                (a, b) -> frequencyMap.get(a) - frequencyMap.get(b)
-            );
-            
-            for (int num : frequencyMap.keySet()) {
                 if (minHeap.size() < k) {
                     minHeap.offer(num);
-                } else if (frequencyMap.get(num) > frequencyMap.get(minHeap.peek())) {
+                } else if (num > minHeap.peek()) {
                     minHeap.poll();
                     minHeap.offer(num);
                 }
             }
             
-            return new ArrayList<>(minHeap);
+            return minHeap.peek(); // kth largest
+        }
+    }
+    
+    // EXAMPLE: Kth Largest in Stream
+    public static class KthLargestStream {
+        private java.util.PriorityQueue<Integer> minHeap;
+        private int k;
+        
+        public KthLargestStream(int k, int[] nums) {
+            this.k = k;
+            this.minHeap = new java.util.PriorityQueue<>();
+            
+            // Add all initial elements
+            for (int num : nums) {
+                add(num);
+            }
         }
         
-        /**
-         * Kth Largest Element in Stream
-         * Strategy: Maintain min-heap of size k
-         */
-        public static class KthLargestStream {
-            private PriorityQueue<Integer> minHeap;
-            private int k;
-            
-            public KthLargestStream(int k, int[] nums) {
-                this.k = k;
-                this.minHeap = new PriorityQueue<>();
-                
-                // Add all initial elements
-                for (int num : nums) {
-                    add(num);
-                }
-            }
-            
-            public int add(int val) {
+        public int add(int val) {
+            if (minHeap.size() < k) {
                 minHeap.offer(val);
-                if (minHeap.size() > k) {
-                    minHeap.poll();
-                }
-                return minHeap.peek();
+            } else if (val > minHeap.peek()) {
+                minHeap.poll();
+                minHeap.offer(val);
             }
+            return minHeap.peek();
         }
     }
     
@@ -305,7 +275,7 @@ public class PriorityQueueReadingGuide {
             List<Integer> result = new ArrayList<>();
             
             // Min-heap storing (value, arrayIndex, elementIndex)
-            PriorityQueue<int[]> minHeap = new PriorityQueue<>(
+            java.util.PriorityQueue<int[]> minHeap = new java.util.PriorityQueue<>(
                 (a, b) -> a[0] - b[0]
             );
             
@@ -353,7 +323,7 @@ public class PriorityQueueReadingGuide {
             if (lists == null || lists.length == 0) return null;
             
             // Min-heap for list nodes
-            PriorityQueue<ListNode> minHeap = new PriorityQueue<>(
+            java.util.PriorityQueue<ListNode> minHeap = new java.util.PriorityQueue<>(
                 (a, b) -> a.val - b.val
             );
             
@@ -386,7 +356,7 @@ public class PriorityQueueReadingGuide {
          */
         public static int[] smallestRange(List<List<Integer>> nums) {
             // Heap storing (value, listIndex, elementIndex)
-            PriorityQueue<int[]> minHeap = new PriorityQueue<>(
+            java.util.PriorityQueue<int[]> minHeap = new java.util.PriorityQueue<>(
                 (a, b) -> a[0] - b[0]
             );
             
@@ -438,13 +408,13 @@ public class PriorityQueueReadingGuide {
          */
         public static class MedianFinder {
             // Max-heap for smaller half
-            private PriorityQueue<Integer> maxHeap;
+            private java.util.PriorityQueue<Integer> maxHeap;
             // Min-heap for larger half
-            private PriorityQueue<Integer> minHeap;
+            private java.util.PriorityQueue<Integer> minHeap;
             
             public MedianFinder() {
-                maxHeap = new PriorityQueue<>(Collections.reverseOrder());
-                minHeap = new PriorityQueue<>();
+                maxHeap = new java.util.PriorityQueue<>(Collections.reverseOrder());
+                minHeap = new java.util.PriorityQueue<>();
             }
             
             public void addNum(int num) {
@@ -513,7 +483,7 @@ public class PriorityQueueReadingGuide {
                 int[] window = Arrays.copyOfRange(nums, i, i + windowSize);
                 
                 // Find top k in current window
-                List<Integer> topK = findKLargest(window, k);
+                List<Integer> topK = TopKTemplates.findKLargest(window, k);
                 result.add(topK);
             }
             
@@ -538,7 +508,7 @@ public class PriorityQueueReadingGuide {
             distances[source] = 0;
             
             // Min-heap storing (distance, vertex)
-            PriorityQueue<int[]> minHeap = new PriorityQueue<>(
+            java.util.PriorityQueue<int[]> minHeap = new java.util.PriorityQueue<>(
                 (a, b) -> a[0] - b[0]
             );
             minHeap.offer(new int[]{0, source});
@@ -583,7 +553,7 @@ public class PriorityQueueReadingGuide {
             Arrays.fill(distances, Integer.MAX_VALUE);
             distances[k] = 0;
             
-            PriorityQueue<int[]> minHeap = new PriorityQueue<>(
+            java.util.PriorityQueue<int[]> minHeap = new java.util.PriorityQueue<>(
                 (a, b) -> a[1] - b[1]
             );
             minHeap.offer(new int[]{k, 0});
@@ -628,7 +598,7 @@ public class PriorityQueueReadingGuide {
             
             boolean[] visited = new boolean[n];
             // Min-heap storing (cost, pointIndex)
-            PriorityQueue<int[]> minHeap = new PriorityQueue<>(
+            java.util.PriorityQueue<int[]> minHeap = new java.util.PriorityQueue<>(
                 (a, b) -> a[0] - b[0]
             );
             
@@ -680,11 +650,11 @@ public class PriorityQueueReadingGuide {
          * Strategy: Use max-heap for priority-based scheduling
          */
         public static class TaskScheduler {
-            private PriorityQueue<Task> taskQueue;
+            private java.util.PriorityQueue<Task> taskQueue;
             
             public TaskScheduler() {
                 // Max-heap based on priority
-                this.taskQueue = new PriorityQueue<>(
+                this.taskQueue = new java.util.PriorityQueue<>(
                     (a, b) -> b.priority - a.priority
                 );
             }
@@ -725,7 +695,7 @@ public class PriorityQueueReadingGuide {
             Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
             
             // Min-heap to track end times
-            PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+            java.util.PriorityQueue<Integer> minHeap = new java.util.PriorityQueue<>();
             minHeap.offer(intervals[0][1]);
             
             for (int i = 1; i < intervals.length; i++) {
@@ -751,7 +721,7 @@ public class PriorityQueueReadingGuide {
             }
             
             // Max-heap based on frequency
-            PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+            java.util.PriorityQueue<Integer> maxHeap = new java.util.PriorityQueue<>(Collections.reverseOrder());
             maxHeap.addAll(taskCount.values());
             
             int time = 0;
@@ -788,10 +758,10 @@ public class PriorityQueueReadingGuide {
      */
     public static void heapTypeExample() {
         // Correct for k largest: min-heap of size k
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        java.util.PriorityQueue<Integer> minHeap = new java.util.PriorityQueue<>();
         
         // Incorrect: max-heap for k largest (inefficient)
-        // PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        // java.util.PriorityQueue<Integer> maxHeap = new java.util.PriorityQueue<>(Collections.reverseOrder());
     }
     
     /**
@@ -800,10 +770,10 @@ public class PriorityQueueReadingGuide {
      */
     public static void comparatorExample() {
         // Correct: consistent comparison
-        PriorityQueue<int[]> correct = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        java.util.PriorityQueue<int[]> correct = new java.util.PriorityQueue<>((a, b) -> a[0] - b[0]);
         
         // Problematic: potential overflow
-        // PriorityQueue<int[]> problematic = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        // java.util.PriorityQueue<int[]> problematic = new java.util.PriorityQueue<>((a, b) -> a[0] - b[0]);
     }
     
     /**
@@ -812,7 +782,7 @@ public class PriorityQueueReadingGuide {
      */
     public static void heapSizeExample() {
         // Correct: maintain size k
-        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        java.util.PriorityQueue<Integer> heap = new java.util.PriorityQueue<>();
         int k = 3;
         
         // Add element with size check

@@ -1,22 +1,22 @@
 package com.dsalgo.AlgoPatterns.String;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-/*
- * HashMap is a fundamental data structure that provides O(1) average time complexity
- * for insertion, deletion, and lookup operations. It's particularly powerful for
- * problems involving frequency counting, grouping elements, and checking existence.
+/**
+ * 🔗 HASHMAP IMPLEMENTATION PATTERN - PRACTICE PROBLEMS
  * 
- * Employ hashmaps when the problem involves frequency counting, grouping characters
- * based on some property, or checking for the existence of certain characters in
- * the string. Hashmaps offer efficient storage and retrieval of characters by keys.
+ * This class contains comprehensive implementations of hashmap algorithms for counting frequencies,
+ * grouping elements, checking existence, storing relationships, and memoization. These algorithms
+ * demonstrate mapping strategies, frequency analysis, grouping techniques, and optimization methods
+ * for various computational problems. The focus is on efficient key-value pair manipulation,
+ * hash table operations, and space-time complexity optimization using hashmap data structures.
  * 
- * Phrases like "count," "frequency," "group," or "exist" suggest the potential use
+ * Pattern Focus: Key-value mapping, frequency counting, grouping, existence checking
+ * Time Complexity: Generally O(1) average for hashmap operations, O(n) for processing elements
+ * Space Complexity: O(n) for storing elements in the hashmap
+ * 
+ * The HashMap pattern is particularly useful when you need fast lookups, are counting
+ * frequencies, grouping similar elements, or need to check for the existence or relationships
  * of hashmaps in the problem. Problems requiring counting occurrences, grouping
  * similar characters, or checking for the presence of specific characters often
  * indicate the application of hashmaps.
@@ -26,7 +26,7 @@ import java.util.Set;
  * Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
  * Explanation: Group anagrams using HashMap with sorted string as key.
  */
-public class HashMapImplementation {
+public class CustomHashMapImplementation {
 
     public static void main(String[] args) {
         // Test HashMap problems

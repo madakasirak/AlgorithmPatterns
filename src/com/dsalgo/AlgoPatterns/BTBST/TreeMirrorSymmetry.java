@@ -5,37 +5,23 @@ import java.util.*;
 /**
  * 🪞 BINARY TREE MIRROR & SYMMETRY PATTERN - PRACTICE PROBLEMS
  * 
- * This class contains comprehensive implementations of binary tree mirror and symmetry
- * algorithms for tree reflection, symmetry detection, structural transformations, and
- * balanced tree construction. These algorithms demonstrate recursive comparisons,
- * in-place and copy-based transformations, tree equivalence checking, and optimal
- * construction techniques for building balanced structures from sorted data.
+ * This class contains comprehensive implementations of binary tree mirror and symmetry algorithms
+ * for checking symmetric properties, inverting tree structures, transforming tree orientations,
+ * and validating balance characteristics. These algorithms demonstrate recursive tree manipulation,
+ * structural comparison techniques, and symmetry validation methods for various tree-based
+ * computational problems requiring geometric and structural analysis.
  * 
- * Pattern Focus: Tree symmetry, structural transformation, recursive comparison, balanced construction
- * Time Complexity: Generally O(n) for tree operations where n is number of nodes
- * Space Complexity: O(h) for recursion where h is tree height, O(n) for construction
+ * Pattern Focus: Tree mirroring, symmetry checking, structural validation, recursive comparison
+ * Time Complexity: Generally O(n) where n is number of nodes in the tree
+ * Space Complexity: O(h) for recursion stack where h is height of the tree
  */
 
-// Definition for a binary tree node
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    
-    TreeNode() {}
-    TreeNode(int val) { this.val = val; }
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
+// TreeNode class is already defined in TreeConstruction.java in the same package
 
 // Definition for singly-linked list
 class ListNode {
     int val;
     ListNode next;
-    
     ListNode() {}
     ListNode(int val) { this.val = val; }
     ListNode(int val, ListNode next) { this.val = val; this.next = next; }

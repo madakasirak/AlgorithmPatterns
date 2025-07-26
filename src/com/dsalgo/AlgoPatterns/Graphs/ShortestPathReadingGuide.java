@@ -695,7 +695,7 @@ public class ShortestPathReadingGuide {
      * ❌ PITFALL 1: Integer Overflow in Distance Calculation
      * Use appropriate data types and check for overflow
      */
-    public static void overflowExample() {
+    public static void overflowExample(int current, int weight, int[] distances, int neighbor) {
         // Correct: Check for overflow before addition
         int newDist = current + weight;
         if (current != Integer.MAX_VALUE && newDist < distances[neighbor]) {
@@ -710,9 +710,9 @@ public class ShortestPathReadingGuide {
      * ❌ PITFALL 2: Processing Already Visited Nodes in Dijkstra
      * Skip nodes that have been optimally processed
      */
-    public static void visitedCheckExample() {
+    public static void visitedCheckExample(boolean[] visited, int node) {
         // Correct: Check if already processed
-        if (visited[node]) continue;
+        if (visited[node]) return; // Changed from continue to return since not in a loop
         visited[node] = true;
         
         // Incorrect: Processing same node multiple times

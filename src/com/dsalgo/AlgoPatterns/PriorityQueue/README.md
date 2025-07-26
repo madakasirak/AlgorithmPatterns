@@ -44,7 +44,7 @@
 
 ### **7. 🎯 Core Priority Queue**
 - **[📖 Reading Guide](./PriorityQueueReadingGuide.java)** - Theory and approach
-- **[💻 Implementation](./PriorityQueue.java)** - Fundamental heap operations
+- **[💻 Implementation](./PriorityQueueProblems.java)** - Fundamental heap operations
 - **When to use**: Basic priority queue operations
 - **Complexity**: Time O(log n) per operation, Space O(n)
 
